@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MURENA_OS</title>
+    <!-- Questa libreria fa la magia e rende tutto stile Win98 -->
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <style>
+        body {
+            background-color: #008080; /* Il verde Win98 */
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            overflow: hidden; /* Niente barre di scorrimento */
+        }
+        .desktop-icon {
+            color: white;
+            text-align: center;
+            width: 80px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .desktop-icon img { width: 48px; height: 48px; image-rendering: pixelated; }
+        .window {
+            width: 500px;
+            position: absolute;
+            top: 20%;
+            left: 30%;
+        }
+        .file-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 10px;
+            background: white;
+        }
+        .file {
+            text-align: center;
+            width: 70px;
+            cursor: pointer;
+        }
+        .file img { width: 32px; height: 32px; image-rendering: pixelated; }
+    </style>
+</head>
+<body>
+
+    <!-- L'icona sul desktop -->
+    <div class="desktop-icon">
+        <img src="https://win98icons.alexmeub.com/icons/directory_closed-4.png" alt="Folder">
+        <p>STUDIOMURENA_LIVE</p>
+    </div>
+
+    <!-- La finestra della cartella aperta -->
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">C:\STUDIOMURENA_LIVE</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="file-grid">
+                <!-- Esempio di file -->
+                <div class="file">
+                    <img src="https://win98icons.alexmeub.com/icons/msdos-1.png">
+                    <p>PROMETHEUS.BAT</p>
+                </div>
+                <div class="file">
+                    <img src="https://win98icons.alexmeub.com/icons/joystick-0.png">
+                    <p>MILAN_SLUG.EXE</p>
+                </div>
+                 <div class="file">
+                    <img src="https://win98icons.alexmeub.com/icons/game_mine_1-0.png">
+                    <p>GTA_MI.EXE</p>
+                </div>
+                <!-- Aggiungi gli altri qui -->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
