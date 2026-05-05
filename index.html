@@ -1,82 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
+    <meta charset="UTF-8">
     <title>MURENA_OS</title>
-    <!-- Questa libreria fa la magia e rende tutto stile Win98 -->
+    <!-- Libreria per l'estetica delle finestre Win98 -->
     <link rel="stylesheet" href="https://unpkg.com/98.css">
     <style>
-        body {
-            background-color: #008080; /* Il verde Win98 */
-            font-family: Arial, sans-serif;
-            margin: 50px;
-            overflow: hidden; /* Niente barre di scorrimento */
-        }
-        .desktop-icon {
+        /* IMPOSTAZIONI GLOBALI E CURSORI RETRO */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* Sfondo Nero */
             color: white;
-            text-align: center;
-            width: 80px;
-            cursor: pointer;
-            margin-bottom: 20px;
+            font-family: 'Pixelated MS Sans Serif', Arial, sans-serif;
+            overflow: hidden;
+            /* Cursore base Win98 */
+            cursor: url('https://win98icons.alexmeub.com/cursors/arrow.cur'), default;
         }
-        .desktop-icon img { width: 48px; height: 48px; image-rendering: pixelated; }
+
+        /* Il cursore a "manina" per i collegamenti e cartelle */
+        .clickable {
+            cursor: url('https://win98icons.alexmeub.com/cursors/pointer.cur'), pointer;
+        }
+
+        /* EFFETTO TUBO CATODICO (CRT) */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Fondamentale: permette i clic sotto l'effetto */
+            z-index: 9999;
+            /* Crea le linee di scansione (scanlines) e una leggerissima trama RGB */
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 3px, 3px 100%;
+            /* Animazione per lo sfarfallio e i glitch */
+            animation: flicker 0.15s infinite, glitch-jump 5s infinite;
+        }
+
+        /* Animazione Sfarfallio (Flicker) */
+        @keyframes flicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 0.85; }
+            100% { opacity: 0.95; }
+        }
+
+        /* Animazione "Salto" del monitor vecchio */
+        @keyframes glitch-jump {
+            0% { transform: translateY(0); opacity: 1; }
+            98% { transform: translateY(0); opacity: 1; }
+            99% { transform: translateY(2px); opacity: 0.8; } /* Scatto giù */
+            100% { transform: translateY(-1px); opacity: 0.9; } /* Scatto su */
+        }
+
+        /* LAYOUT DEL DESKTOP */
+        .desktop {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+            text-align: center;
+        }
+
+        .desktop-icon img {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated; /* Mantiene la sgranatura perfetta */
+            margin-bottom: 5px;
+        }
+
+        .desktop-icon span {
+            background-color: transparent;
+            color: white;
+            font-size: 12px;
+            text-shadow: 1px 1px 0 #000; /* Per renderlo leggibile anche se lo sfondo fosse chiaro */
+        }
+
+        /* Effetto selezione cartella */
+        .desktop-icon:active span, .desktop-icon.selected span {
+            background-color: #000080; /* Blu scuro classico Win98 */
+            border: 1px dotted white;
+        }
+
+        /* LA FINESTRA WIN98 (Nascosta di default) */
         .window {
-            width: 500px;
             position: absolute;
             top: 20%;
             left: 30%;
+            width: 500px;
+            display: none; /* Si attiva col doppio clic */
+            z-index: 100;
         }
+
         .file-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            padding: 10px;
-            background: white;
+            padding: 15px;
+            background: #fff;
         }
+
         .file {
             text-align: center;
-            width: 70px;
-            cursor: pointer;
+            width: 80px;
+            color: black;
         }
-        .file img { width: 32px; height: 32px; image-rendering: pixelated; }
+
+        .file img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+        }
     </style>
 </head>
 <body>
 
-    <!-- L'icona sul desktop -->
-    <div class="desktop-icon">
-        <img src="https://win98icons.alexmeub.com/icons/directory_closed-4.png" alt="Folder">
-        <p>STUDIOMURENA_LIVE</p>
+    <!-- OVERLAY EFFETTO CRT -->
+    <div class="crt-overlay"></div>
+
+    <!-- ICONE SUL DESKTOP -->
+    <div class="desktop">
+        <!-- Tradizionali -->
+        <div class="desktop-icon clickable">
+            <img src="https://win98icons.alexmeub.com/icons/computer_explorer-5.png" alt="Risorse">
+            <span>Risorse del Computer</span>
+        </div>
+        <div class="desktop-icon clickable">
+            <img src="https://win98icons.alexmeub.com/icons/recycle_bin_empty-4.png" alt="Cestino">
+            <span>Cestino</span>
+        </div>
+        
+        <!-- Cartelle Murena -->
+        <div class="desktop-icon clickable" id="folder-live" ondblclick="openWindow()">
+            <img src="https://win98icons.alexmeub.com/icons/directory_closed-4.png" alt="Live">
+            <span>LIVE</span>
+        </div>
+        <div class="desktop-icon clickable">
+            <img src="https://win98icons.alexmeub.com/icons/directory_closed-4.png" alt="Video">
+            <span>VIDEO</span>
+        </div>
+        <div class="desktop-icon clickable">
+            <img src="https://win98icons.alexmeub.com/icons/directory_closed-4.png" alt="Ospiti">
+            <span>OSPITI</span>
+        </div>
     </div>
 
-    <!-- La finestra della cartella aperta -->
-    <div class="window">
+    <!-- FINESTRA "LIVE" (Si apre col doppio clic sulla cartella LIVE) -->
+    <div class="window" id="live-window">
         <div class="title-bar">
-            <div class="title-bar-text">C:\STUDIOMURENA_LIVE</div>
+            <div class="title-bar-text">C:\MURENA\LIVE</div>
             <div class="title-bar-controls">
                 <button aria-label="Minimize"></button>
                 <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+                <button aria-label="Close" onclick="closeWindow()"></button>
             </div>
         </div>
         <div class="window-body">
             <div class="file-grid">
-                <!-- Esempio di file -->
-                <div class="file">
+                <!-- Esempi di file della scaletta -->
+                <div class="file clickable">
                     <img src="https://win98icons.alexmeub.com/icons/msdos-1.png">
                     <p>PROMETHEUS.BAT</p>
                 </div>
-                <div class="file">
+                <div class="file clickable">
                     <img src="https://win98icons.alexmeub.com/icons/joystick-0.png">
                     <p>MILAN_SLUG.EXE</p>
                 </div>
-                 <div class="file">
+                <div class="file clickable">
                     <img src="https://win98icons.alexmeub.com/icons/game_mine_1-0.png">
-                    <p>GTA_MI.EXE</p>
+                    <p>GTA_CANNEMOZZE.EXE</p>
                 </div>
-                <!-- Aggiungi gli altri qui -->
             </div>
         </div>
     </div>
+
+    <!-- PICCOLO SCRIPT PER APRIRE/CHIUDERE LA FINESTRA -->
+    <script>
+        function openWindow() {
+            document.getElementById('live-window').style.display = 'block';
+        }
+        function closeWindow() {
+            document.getElementById('live-window').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
