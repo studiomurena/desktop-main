@@ -2,8 +2,8 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>MURENA_OS - Win95</title>
-    <!-- Libreria per l'estetica delle finestre Win95/98 -->
+    <title>MURENA_OS - Win95 [CUSTOM ASSETS]</title>
+    <!-- Libreria base per l'estetica delle finestre Win95/98 -->
     <link rel="stylesheet" href="https://unpkg.com/98.css">
     <style>
         /* IMPOSTAZIONI GLOBALI E CURSORI RETRO */
@@ -12,10 +12,11 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #000000;
+            background-color: #000000; /* Sfondo Nero Assoluto */
             color: white;
             font-family: 'Pixelated MS Sans Serif', Arial, sans-serif;
             overflow: hidden;
+            /* Cursore base Win95/98 */
             cursor: url('https://raw.githubusercontent.com/AlexMeub/win98-icons/master/cursors/arrow.cur'), default;
         }
 
@@ -71,10 +72,12 @@
             text-align: center;
         }
 
-        .desktop-icon img {
+        /* TUA ICONA CUSTOM CARTELLA */
+        .desktop-icon .custom-folder {
             width: 32px;
             height: 32px;
-            image-rendering: pixelated;
+            /* Se la tua cartella è a bassa risoluzione (pixel art), questo la tiene sgranata */
+            image-rendering: pixelated; 
             margin-bottom: 5px;
         }
 
@@ -210,7 +213,8 @@
             box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
         }
 
-        .start-button img {
+        /* TUA ICONA CUSTOM START */
+        .start-button .custom-start-icon {
             width: 16px;
             height: 16px;
             margin-right: 4px;
@@ -238,24 +242,25 @@
 
     <!-- ICONE SUL DESKTOP -->
     <div class="desktop">
-        <div class="desktop-icon clickable">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/computer_explorer-5.png" alt="Risorse">
-            <span>Risorse del Computer</span>
-        </div>
         
-        <!-- NUOVA ICONA INTERNET CHE FA PARTIRE IL MODEM -->
+        <!-- ICONA INTERNET (Tiene l'icona originale come "connessione") -->
         <div class="desktop-icon clickable" ondblclick="startDialUp()">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/network_internet_pcs-0.png" alt="Internet">
+            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/network_internet_pcs-0.png" width="32" alt="Internet">
             <span>Connessione a MurenaNET</span>
         </div>
 
+        <!-- CARTELLE CON LA TUA ICONA CUSTOM (pescate dalla cartella assets/) -->
         <div class="desktop-icon clickable">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/directory_closed-4.png" alt="Live">
+            <img src="assets/cartella.png" class="custom-folder" alt="Live">
             <span>LIVE</span>
         </div>
         <div class="desktop-icon clickable">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/directory_closed-4.png" alt="Video">
+            <img src="assets/cartella.png" class="custom-folder" alt="Video">
             <span>VIDEO</span>
+        </div>
+        <div class="desktop-icon clickable">
+            <img src="assets/cartella.png" class="custom-folder" alt="Ospiti">
+            <span>OSPITI</span>
         </div>
     </div>
 
@@ -323,8 +328,9 @@
 
     <!-- BARRA DELLE APPLICAZIONI IN BASSO -->
     <div class="taskbar">
+        <!-- Bottone Start con TUA ICONA (pescata dalla cartella assets/) -->
         <div class="start-button clickable">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/windows_slanted-1.png" alt="Win">
+            <img src="assets/start.png" class="custom-start-icon" alt="Win">
             Start
         </div>
         <div class="system-tray" id="clock">00:00</div>
@@ -345,16 +351,13 @@
         let dialTimeout1, dialTimeout2, dialTimeout3;
 
         function startDialUp() {
-            // Mostra la finestra di connessione
             document.getElementById('dialup-window').style.display = 'block';
             let status = document.getElementById('dial-status');
             let progress = document.getElementById('dial-progress');
             
-            // Resetta lo stato (nel caso lo chiudi e riapri)
             status.innerText = "Composizione numero 0800-MURENA...";
             progress.style.width = "20%";
 
-            // Simula i passaggi del modem
             dialTimeout1 = setTimeout(() => {
                 status.innerText = "Verifica nome utente e password...";
                 progress.style.width = "60%";
@@ -365,25 +368,20 @@
                 progress.style.width = "100%";
             }, 3000);
 
-            // Dopo 4.5 secondi si connette: chiude il dial-up e apre il browser
             dialTimeout3 = setTimeout(() => {
                 document.getElementById('dialup-window').style.display = 'none';
                 document.getElementById('browser-window').style.display = 'block';
-                // Mette automaticamente il cursore dentro la barra di ricerca!
                 document.getElementById('live-search').focus();
             }, 4000);
         }
 
-        // Funzioni per chiudere le finestre
         function closeDialUp() {
             document.getElementById('dialup-window').style.display = 'none';
-            // Ferma le animazioni se annulli prima
             clearTimeout(dialTimeout1); clearTimeout(dialTimeout2); clearTimeout(dialTimeout3);
         }
 
         function closeBrowser() {
             document.getElementById('browser-window').style.display = 'none';
-            // Svuota la barra di ricerca per la prossima volta
             document.getElementById('live-search').value = "";
         }
     </script>
