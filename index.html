@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>MURENA_OS - Win95 [CUSTOM ASSETS]</title>
+    <title>MURENA_OS - Win95 [MAXISCHERMO & ANIMATO]</title>
     <!-- Libreria base per l'estetica delle finestre Win95/98 -->
     <link rel="stylesheet" href="https://unpkg.com/98.css">
     <style>
@@ -12,11 +12,10 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #000000; /* Sfondo Nero Assoluto */
+            background-color: #000000;
             color: white;
             font-family: 'Pixelated MS Sans Serif', Arial, sans-serif;
             overflow: hidden;
-            /* Cursore base Win95/98 */
             cursor: url('https://raw.githubusercontent.com/AlexMeub/win98-icons/master/cursors/arrow.cur'), default;
         }
 
@@ -31,7 +30,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            pointer-events: none; /* Permette di cliccare e SCRIVERE sotto l'effetto */
+            pointer-events: none;
             z-index: 9999;
             background: 
                 linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -53,13 +52,13 @@
             100% { transform: translateY(-1px); opacity: 0.9; }
         }
 
-        /* LAYOUT DEL DESKTOP */
+        /* LAYOUT DEL DESKTOP (INGRANDITO) */
         .desktop {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            height: calc(100vh - 60px);
+            gap: 35px;
+            padding: 30px;
+            height: calc(100vh - 80px);
             position: absolute;
             z-index: 10;
         }
@@ -68,23 +67,50 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 80px;
+            width: 110px;
             text-align: center;
         }
 
-        /* TUA ICONA CUSTOM CARTELLA */
-        .desktop-icon .custom-folder {
-            width: 32px;
-            height: 32px;
-            /* Se la tua cartella è a bassa risoluzione (pixel art), questo la tiene sgranata */
+        /* ICONE GENERALI INGRANDITE */
+        .desktop-icon img {
+            width: 64px;
+            height: 64px;
             image-rendering: pixelated; 
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+        }
+
+        /* IL TUO CESTINO ANIMATO (Spritesheet 5x5) */
+        .cestino-animato {
+            width: 64px;
+            height: 64px;
+            background-image: url('assets/cestino.png');
+            /* Dimensioni totali del background: 64px * 5 = 320px */
+            background-size: 320px 320px; 
+            image-rendering: pixelated;
+            margin-bottom: 8px;
+            /* X completa 5 scatti ogni 0.4s, Y scende di una riga ogni 0.4s (totale 2s) */
+            animation: 
+                cestino-x 0.4s steps(5) infinite,
+                cestino-y 2.0s steps(5) infinite;
+        }
+
+        /* Movimento orizzontale (colonne) */
+        @keyframes cestino-x {
+            from { background-position-x: 0px; }
+            to { background-position-x: -320px; }
+        }
+
+        /* Movimento verticale (righe) */
+        @keyframes cestino-y {
+            from { background-position-y: 0px; }
+            to { background-position-y: -320px; }
         }
 
         .desktop-icon span {
             color: white;
-            font-size: 11px;
-            padding: 2px;
+            font-size: 16px;
+            padding: 4px;
+            text-shadow: 2px 2px 0px #000;
         }
 
         .desktop-icon:active span {
@@ -95,52 +121,57 @@
         /* FINESTRE */
         .window {
             position: absolute;
-            display: none; /* Nascoste di default */
+            display: none;
             z-index: 100;
         }
 
-        /* FINESTRA MODEM DIAL-UP */
+        /* FINESTRA MODEM DIAL-UP (Scala più grande) */
         #dialup-window {
-            top: 35%;
-            left: 40%;
-            width: 350px;
+            top: 30%;
+            left: 35%;
+            width: 450px;
         }
+        #dialup-window .title-bar-text { font-size: 14px; }
+        #dial-status { font-size: 16px; }
 
         .dialup-content {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 10px;
+            gap: 20px;
+            padding: 20px;
         }
 
-        /* FINESTRA BROWSER STUDIO MUGLE */
+        /* FINESTRA BROWSER MUUGLE (MAXISCHERMO) */
         #browser-window {
-            top: 10%;
-            left: 15%;
-            width: 70%;
-            height: 70%;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 85%;
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.8);
         }
+        #browser-window .title-bar-text { font-size: 16px; }
 
         .browser-toolbar {
             background: #c0c0c0;
-            padding: 5px;
+            padding: 10px;
             border-bottom: 2px solid white;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             color: black;
-            font-size: 12px;
+            font-size: 16px;
         }
 
         .browser-toolbar input {
             flex-grow: 1;
             font-family: 'Pixelated MS Sans Serif', Arial;
+            font-size: 16px;
+            padding: 4px;
         }
 
         .browser-page {
             background-color: #ffffff;
-            height: calc(100% - 70px);
+            height: calc(100% - 80px);
             color: black;
             display: flex;
             flex-direction: column;
@@ -150,88 +181,97 @@
             position: relative;
         }
 
-        /* LOGO TIPO VECCHIO GOOGLE */
+        /* LOGO MUUGLE */
         .mugle-logo {
-            font-size: 60px;
+            font-size: 110px;
             font-weight: bold;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            letter-spacing: -4px;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.15);
         }
 
-        /* Barra di ricerca reale */
+        /* Barra di ricerca reale (Gigante) */
         .search-box {
-            width: 400px;
-            padding: 5px;
-            font-size: 16px;
-            border: 2px inset #c0c0c0;
-            margin-bottom: 20px;
+            width: 60%;
+            max-width: 800px;
+            padding: 12px 15px;
+            font-size: 28px;
+            border: 3px inset #c0c0c0;
+            margin-bottom: 30px;
             font-family: 'Courier New', Courier, monospace;
             outline: none;
         }
         
         .search-box:focus {
-            background-color: #f0f8ff; /* Azzurrino quando ci scrivi */
+            background-color: #f0f8ff;
         }
 
         .search-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
-        /* BARRA DELLE APPLICAZIONI (TASKBAR) */
+        .search-buttons button {
+            font-size: 18px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        /* BARRA DELLE APPLICAZIONI INGRANDITA (TASKBAR) */
         .taskbar {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 28px;
+            height: 45px;
             background-color: #c0c0c0;
-            border-top: 1px solid #fff;
+            border-top: 2px solid #fff;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2px;
+            padding: 4px;
             box-sizing: border-box;
             z-index: 1000;
             color: black;
         }
 
+        /* BOTTONE START */
         .start-button {
             display: flex;
             align-items: center;
-            height: 22px;
-            padding: 0 5px;
+            height: 35px;
+            padding: 0 12px;
             margin-left: 2px;
             background-color: #c0c0c0;
             font-weight: bold;
-            font-size: 12px;
-            border-top: 1px solid #fff;
-            border-left: 1px solid #fff;
-            border-bottom: 1px solid #000;
-            border-right: 1px solid #000;
+            font-size: 18px;
+            border-top: 2px solid #fff;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #000;
+            border-right: 2px solid #000;
             box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
         }
 
-        /* TUA ICONA CUSTOM START */
+        /* TUA ICONA CUSTOM START (Ora è quadrata 1:1) */
         .start-button .custom-start-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 4px;
-            image-rendering: pixelated;
+            width: 28px;  
+            height: 28px; 
+            margin-right: 8px; 
+            image-rendering: auto; 
         }
 
+        /* OROLOGIO E SYSTEM TRAY */
         .system-tray {
-            height: 20px;
-            margin-right: 5px;
-            padding: 0 10px;
+            height: 28px;
+            margin-right: 8px;
+            padding: 0 15px;
             display: flex;
             align-items: center;
-            font-size: 11px;
-            border-top: 1px solid #808080;
-            border-left: 1px solid #808080;
-            border-bottom: 1px solid #fff;
-            border-right: 1px solid #fff;
+            font-size: 16px;
+            border-top: 2px solid #808080;
+            border-left: 2px solid #808080;
+            border-bottom: 2px solid #fff;
+            border-right: 2px solid #fff;
         }
     </style>
 </head>
@@ -243,28 +283,34 @@
     <!-- ICONE SUL DESKTOP -->
     <div class="desktop">
         
-        <!-- ICONA INTERNET (Tiene l'icona originale come "connessione") -->
+        <!-- ICONA INTERNET -->
         <div class="desktop-icon clickable" ondblclick="startDialUp()">
-            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/network_internet_pcs-0.png" width="32" alt="Internet">
-            <span>Connessione a MurenaNET</span>
+            <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/network_internet_pcs-0.png" alt="Internet">
+            <span>MurenaNET</span>
         </div>
 
-        <!-- CARTELLE CON LA TUA ICONA CUSTOM (pescate dalla cartella assets/) -->
+        <!-- IL TUO CESTINO ANIMATO CUSTOM -->
         <div class="desktop-icon clickable">
-            <img src="assets/cartella.png" class="custom-folder" alt="Live">
+            <div class="cestino-animato"></div>
+            <span>Cestino</span>
+        </div>
+
+        <!-- LE TUE CARTELLE CUSTOM -->
+        <div class="desktop-icon clickable">
+            <img src="assets/cartella.png" alt="Live">
             <span>LIVE</span>
         </div>
         <div class="desktop-icon clickable">
-            <img src="assets/cartella.png" class="custom-folder" alt="Video">
+            <img src="assets/cartella.png" alt="Video">
             <span>VIDEO</span>
         </div>
         <div class="desktop-icon clickable">
-            <img src="assets/cartella.png" class="custom-folder" alt="Ospiti">
+            <img src="assets/cartella.png" alt="Ospiti">
             <span>OSPITI</span>
         </div>
     </div>
 
-    <!-- FINESTRA 1: CONNESSIONE MODEM (DIAL-UP) -->
+    <!-- FINESTRA 1: CONNESSIONE MODEM -->
     <div class="window" id="dialup-window">
         <div class="title-bar">
             <div class="title-bar-text">Connessione a MurenaNET</div>
@@ -274,71 +320,65 @@
         </div>
         <div class="window-body">
             <div class="dialup-content">
-                <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/modem-0.png" width="32" style="image-rendering: pixelated;">
-                <div>
+                <img src="https://raw.githubusercontent.com/AlexMeub/win98-icons/master/png/modem-0.png" width="48" height="48" style="image-rendering: pixelated;">
+                <div style="flex-grow: 1;">
                     <p id="dial-status" style="margin-bottom: 10px;">Inizializzazione modem...</p>
-                    <div style="width: 250px; background: #fff; border: 1px solid #808080; height: 15px;">
+                    <div style="width: 100%; background: #fff; border: 2px inset #c0c0c0; height: 20px;">
                         <div id="dial-progress" style="width: 0%; height: 100%; background: #000080;"></div>
                     </div>
                 </div>
             </div>
             <div style="text-align: right; margin-top: 10px;">
-                <button onclick="closeDialUp()">Annulla</button>
+                <button onclick="closeDialUp()" style="font-size: 16px; padding: 4px 12px;">Annulla</button>
             </div>
         </div>
     </div>
 
-    <!-- FINESTRA 2: BROWSER RETRO CON STUDIO MUGLE -->
+    <!-- FINESTRA 2: BROWSER MUUGLE INGRANDITO -->
     <div class="window" id="browser-window">
         <div class="title-bar">
-            <div class="title-bar-text">Murena Navigator - STUDIO MUgle</div>
+            <div class="title-bar-text">Murena Navigator - Muugle</div>
             <div class="title-bar-controls">
                 <button aria-label="Maximize"></button>
                 <button aria-label="Close" onclick="closeBrowser()"></button>
             </div>
         </div>
         
-        <!-- Finta barra degli indirizzi -->
         <div class="browser-toolbar">
-            Indirizzo: <input type="text" value="http://www.studiomugle.net" disabled>
-            <button>Vai</button>
+            Indirizzo: <input type="text" value="http://www.muugle.net" disabled>
+            <button style="font-size: 14px; padding: 2px 10px;">Vai</button>
         </div>
 
-        <!-- LA VERA PAGINA WEB DOVE PUOI SCRIVERE -->
         <div class="browser-page">
             <div class="mugle-logo">
-                <span style="color: #0039b6;">S</span><span style="color: #c41200;">T</span><span style="color: #f3c518;">U</span><span style="color: #0039b6;">D</span><span style="color: #30a72f;">I</span><span style="color: #c41200;">O</span>
-                &nbsp;
-                <span style="color: #0039b6;">M</span><span style="color: #c41200;">U</span><span style="color: #f3c518;">g</span><span style="color: #0039b6;">l</span><span style="color: #30a72f;">e</span>
+                <span style="color: #0039b6;">M</span><span style="color: #c41200;">u</span><span style="color: #f3c518;">u</span><span style="color: #0039b6;">g</span><span style="color: #30a72f;">l</span><span style="color: #c41200;">e</span>
             </div>
 
-            <!-- QUESTA È LA BARRA DOVE SCRIVERAI DAL VIVO -->
-            <input type="text" class="search-box" id="live-search" placeholder="Cerca nel web..." autocomplete="off">
+            <input type="text" class="search-box" id="live-search" placeholder="Cerca..." autocomplete="off">
             
             <div class="search-buttons">
-                <button>Cerca con MUgle</button>
+                <button>Cerca con Muugle</button>
                 <button>Mi sento fortunato</button>
             </div>
             
-            <p style="margin-top: 40px; font-size: 12px; color: gray;">
+            <p style="margin-top: 60px; font-size: 16px; color: gray;">
                 &copy; 1998 Studio Murena Corporation
             </p>
         </div>
     </div>
 
-    <!-- BARRA DELLE APPLICAZIONI IN BASSO -->
+    <!-- BARRA DELLE APPLICAZIONI IN BASSO GIGANTE -->
     <div class="taskbar">
-        <!-- Bottone Start con TUA ICONA (pescata dalla cartella assets/) -->
+        <!-- Bottone con la tua START custom e la scritta -->
         <div class="start-button clickable">
-            <img src="assets/start.png" class="custom-start-icon" alt="Win">
+            <img src="assets/start.png" class="custom-start-icon" alt="Icona">
             Start
         </div>
         <div class="system-tray" id="clock">00:00</div>
     </div>
 
-    <!-- SCRIPT (Magia delle animazioni) -->
+    <!-- SCRIPT (Orologio e Finestre) -->
     <script>
-        // Funzione per l'orologio
         function updateTime() {
             const now = new Date();
             let hours = now.getHours().toString().padStart(2, '0');
@@ -347,7 +387,6 @@
         }
         updateTime(); setInterval(updateTime, 1000);
 
-        // FUNZIONE ANIMAZIONE DIAL-UP E APERTURA BROWSER
         let dialTimeout1, dialTimeout2, dialTimeout3;
 
         function startDialUp() {
